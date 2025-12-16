@@ -1,0 +1,84 @@
+import { AxiosInstance, AxiosRequestConfig } from './types'
+import Axios from './core/Axios'
+import { extend } from './helpers/util'
+import defaults from './defaults'
+
+//   用工厂模式去创建一个 axios 混合对象
+
+// 在 createInstance 工厂函数的内部，我们首先实例化了 Axios 实例 context，
+// 接着创建instance 指向 Axios.prototype.request 方法，并绑定了上下文 context；
+// 接着通过 extend 方法把 context 中的原型方法和实例方法全部拷贝到 instance 上，
+// 这样就实现了一个混合对象：instance 本身是一个函数，又拥有了 Axios 类的所有原型和实例属性，
+// 最终把这个 instance 返回。由于这里 TypeScript 不能正确推断 instance 的类型，
+// 我们把它断言成 AxiosInstance 类型。
+
+//这样我们就可以通过 createInstance 工厂函数创建了 axios，
+// 当直接调用 axios 方法就相当于执行了 Axios 类的 request 方法发送请求，
+// 当然我们也可以调用 axios.get、axios.post 等方法。
+function createInstance(config: AxiosRequestConfig): AxiosInstance {
+  const context = new Axios(config)
+  const instance = Axios.prototype.request.bind(context)
+
+  extend(instance, context)
+
+  return instance as AxiosInstance
+}
+
+const axios = createInstance(defaults)
+
+export default axios
+
+// import { AxiosRequestConfig } from "./types"
+// import xhr from './core/xhr'
+// import { buildURL } from "./helpers/url"
+// import { transformRequest,transformResponse} from "./helpers/data"
+// import { processHeaders } from "./helpers/headers"
+
+// import {AxiosPromise,AxiosResponse} from "./types"
+
+// // import { AxiosError } from "./helpers/error"
+
+// // function axios(config: AxiosRequestConfig) {
+// //     processConfig(config)
+// //     xhr(config)
+// // }
+
+// // function axios(config: AxiosRequestConfig): AxiosPromise {
+// //   processConfig(config)
+// //   return xhr(config)  // 返回 一个 promise对象
+// // }
+
+// function axios(config: AxiosRequestConfig): AxiosPromise {
+//   processConfig(config) // 返回 一个 promise对象 然后then 它
+//   return xhr(config).then((res) => {
+//     return transformResponseData(res)
+//   })
+// }
+
+// function transformResponseData(res: AxiosResponse): AxiosResponse {
+//   res.data = transformResponse(res.data)
+//   return res
+// }
+
+// function processConfig (config: AxiosRequestConfig): void {
+//   config.url = transformUrl(config)
+//   config.headers = transformHeaders(config)
+//   // 因为我们处理 header 的时候依赖了 data，所以要在处理请求 body 数据之前处理请求 header。
+//   config.data = transformRequestData(config)
+// }
+
+// function transformUrl (config: AxiosRequestConfig): string {
+//   const { url = '', params } = config
+//   return buildURL(url, params)
+// }
+
+// function transformRequestData (config: AxiosRequestConfig): any {
+//   return transformRequest(config.data)
+// }
+
+// function transformHeaders (config: AxiosRequestConfig) {
+//   const { headers = {}, data } = config
+//   return processHeaders(headers, data)
+// }
+
+// export default axios

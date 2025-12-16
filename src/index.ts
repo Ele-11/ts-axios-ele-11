@@ -1,11 +1,5 @@
+import axios from './axios'
 
-import { AxiosRequestConfig } from './types';
+export * from './types'
 
-import xhr from './xhr';
-
-function axios(config: AxiosRequestConfig):void {
-   xhr(config);
-}
-
-
-export default axios;
+export default axios
