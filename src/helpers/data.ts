@@ -1,6 +1,4 @@
-import { CLIENT_RENEG_WINDOW } from 'tls'
 import { isPlainObject } from './util'
-import { log } from 'console'
 
 export function transformRequest(data: any): any {
   if (isPlainObject(data)) {

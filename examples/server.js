@@ -8,6 +8,13 @@ const WebpackConfig = require('./webpack.config')
 const app = express()
 const compiler = webpack(WebpackConfig)
 
+// 关键：这两句必须出现在所有路由挂载之前
+app.use(express.json());          // 解析 application/json
+app.use(express.urlencoded({ extended: true })); // 解析表单格式，可选
+
+
+
+
 app.use(webpackDevMiddleware(compiler, {
   publicPath: '/__build__/',
   stats: {
@@ -20,13 +27,9 @@ app.use(webpackHotMiddleware(compiler))
 
 app.use(express.static(__dirname))
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: true }))
 
-const port = process.env.PORT || 8080
-module.exports = app.listen(port, () => {
-  console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop-11`)
-})
 
 
 
@@ -145,7 +148,7 @@ router.get('/extend/get', function(req, res) {
 
 
 
-
+//  拦截器相关的实现
 
   router.get('/interceptor/get', function(req, res) {
     res.end('hello-------ELe---')
@@ -153,4 +156,30 @@ router.get('/extend/get', function(req, res) {
 
 
 
+  //配置项相关的实现
+
+
+  router.post('/config/post', function(req, res) {
+    res.json(req.body)
+    // console.log('Content-Type:', req.get('content-type'));
+    // console.log('req.body:', req.body);   // 这里应该不再是 {}
+    // res.json({
+    //   code: 0,
+    //   message: 'ok',
+    //   result: {
+    //     name: 'Ele',
+    //     age: 11,
+    //     res:req.body
+    //   }
+    // })
+  })
+  
+
 app.use(router)
+
+
+
+const port = process.env.PORT || 8080
+module.exports = app.listen(port, () => {
+  console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop-11`)
+})

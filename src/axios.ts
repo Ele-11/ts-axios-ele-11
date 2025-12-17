@@ -1,5 +1,6 @@
-import { AxiosInstance, AxiosRequestConfig } from './types'
+import { AxiosInstance, AxiosRequestConfig, AxiosStatic } from './types'
 import Axios from './core/Axios'
+import mergeConfig from './core/mergeConfig'
 import { extend } from './helpers/util'
 import defaults from './defaults'
 
@@ -15,16 +16,31 @@ import defaults from './defaults'
 //这样我们就可以通过 createInstance 工厂函数创建了 axios，
 // 当直接调用 axios 方法就相当于执行了 Axios 类的 request 方法发送请求，
 // 当然我们也可以调用 axios.get、axios.post 等方法。
-function createInstance(config: AxiosRequestConfig): AxiosInstance {
+// function createInstance(config: AxiosRequestConfig): AxiosInstance {
+//   const context = new Axios(config)
+//   const instance = Axios.prototype.request.bind(context)
+
+//   extend(instance, context)
+
+//   return instance as AxiosInstance
+// }
+
+// const axios = createInstance(defaults)
+
+function createInstance(config: AxiosRequestConfig): AxiosStatic {
   const context = new Axios(config)
   const instance = Axios.prototype.request.bind(context)
 
   extend(instance, context)
 
-  return instance as AxiosInstance
+  return instance as AxiosStatic
 }
 
 const axios = createInstance(defaults)
+
+axios.create = function create(config) {
+  return createInstance(mergeConfig(defaults, config))
+}
 
 export default axios
 

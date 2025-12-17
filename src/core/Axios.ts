@@ -8,6 +8,7 @@ import {
 import dispatchRequest from './dispatchRequest'
 import InterceptorManager from './interceptorManager'
 import { ResolvedFn, RejectedFn } from '../types'
+import mergeConfig from './mergeConfig'
 
 interface PromiseChain {
   resolved: ResolvedFn | ((config: AxiosRequestConfig) => AxiosPromise)
@@ -62,6 +63,8 @@ export default class Axios {
     } else {
       config = url
     }
+
+    config = mergeConfig(this.defaults, config)
 
     const chain: PromiseChain[] = [
       {

@@ -146,5 +146,6 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     })
 
     request.send(data)
+    // request.send(JSON.stringify(data))
   })
 }

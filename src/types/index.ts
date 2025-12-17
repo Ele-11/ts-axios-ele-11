@@ -16,6 +16,10 @@
 //   patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise
 // }
 
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance
+}
+
 export interface AxiosInterceptorManager<T> {
   //use 方法支持 2 个参数，第一个是 resolve 函数，第二个是 reject 函数，
   // 对于 resolve 函数的参数，请求拦截器是 AxiosRequestConfig 类型的，
@@ -56,6 +60,8 @@ export interface AxiosResponse<T = any> {
 export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
 
 export interface Axios {
+  defaults: AxiosRequestConfig
+
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>
     response: AxiosInterceptorManager<AxiosResponse>
@@ -112,6 +118,16 @@ export interface AxiosRequestConfig {
   headers?: any
   timeout?: number
   responseType?: XMLHttpRequestResponseType
+
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
+
+  [propName: string]: any //我们会通过 config2[key] 这种索引的方式访问，
+  //所以需要给 AxiosRequestConfig 的接口定义添加一个字符串索引签名。
+}
+
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }
 
 export interface AxiosError extends Error {
