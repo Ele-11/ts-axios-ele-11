@@ -35,10 +35,15 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       method = 'get',
       headers,
       responseType,
-      timeout
+      timeout,
+      withCredentials
     } = config
 
     const request = new XMLHttpRequest()
+
+    if (withCredentials) {
+      request.withCredentials = true
+    }
 
     // 网络异常 处理
     request.onerror = function handleError() {
@@ -146,6 +151,5 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     })
 
     request.send(data)
-    // request.send(JSON.stringify(data))
   })
 }

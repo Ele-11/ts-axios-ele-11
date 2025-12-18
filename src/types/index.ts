@@ -119,6 +119,8 @@ export interface AxiosRequestConfig {
   timeout?: number
   responseType?: XMLHttpRequestResponseType
 
+  withCredentials?: boolean
+
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   transformResponse?: AxiosTransformer | AxiosTransformer[]
 

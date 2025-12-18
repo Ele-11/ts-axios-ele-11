@@ -7,20 +7,20 @@ import { AxiosTransformer } from '../../src/types'
 
 // 11111111111111111111111111111111111
 
-// axios.defaults.headers.common['test2'] = 1233333333333
+axios.defaults.headers.common['test2'] = 1233333333333
 
-// axios({
-//   url: '/config/post',
-//   method: 'post',
-//   data: qs.stringify({
-//     a: 1
-//   }),
-//   headers: {
-//     test1: '3211111111111111'
-//   }
-// }).then(res => {
-//   console.log(res.data)
-// })
+axios({
+  url: '/config/post',
+  method: 'post',
+  data: qs.stringify({
+    a: 1
+  }),
+  headers: {
+    test1: '3211111111111111'
+  }
+}).then(res => {
+  console.log(res.data)
+})
 
 
 // 22222222222222222222222222222222222
