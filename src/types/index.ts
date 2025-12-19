@@ -127,11 +127,20 @@ export interface AxiosRequestConfig {
   xsrfCookieName?: string
   xsrfHeaderName?: string
 
+  auth?: AxiosBasicCredentials
+
+  validateStatus?: (status: number) => boolean
+
   onDownloadProgress?: (e: ProgressEvent) => void
   onUploadProgress?: (e: ProgressEvent) => void
 
   [propName: string]: any //我们会通过 config2[key] 这种索引的方式访问，
   //所以需要给 AxiosRequestConfig 的接口定义添加一个字符串索引签名。
+}
+
+export interface AxiosBasicCredentials {
+  username: string
+  password: string
 }
 
 export interface AxiosTransformer {

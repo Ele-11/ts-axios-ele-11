@@ -16,6 +16,10 @@ const defaults: AxiosRequestConfig = {
       Accept: 'application/json, text/plain, */*'
     }
   },
+  validateStatus(status: number): boolean {
+    // 默认配置  网络状态码在 200到3000之间的 才算是合理的  当然你可以自定义的时候传入一个函数 来判断是否合理
+    return status >= 200 && status < 300
+  },
 
   transformRequest: [
     function(data: any, headers: any): any {

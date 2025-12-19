@@ -225,6 +225,31 @@ router.post('/more/upload', function(req, res) {
 })
 
 
+router.post('/more/post', function(req, res) {
+  const auth = req.headers.authorization
+  const [type, credentials] = auth.split(' ')
+  console.log(atob(credentials))
+  const [username, password] = atob(credentials).split(':')
+  if (type === 'Basic' && username === 'Ele' && password === '123456') {
+    res.json(req.body)
+  } else {
+    res.end('UnAuthorization')
+  }
+})
+
+
+
+router.get('/more/304', function(req, res) {
+  res.status(304)
+  res.json(req.body+" 304-Ele-1111111111111111")
+  res.end()
+})
+
+
+
+
+
+
 
 
 
