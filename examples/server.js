@@ -4,6 +4,9 @@ const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
+const path = require('path')
+
+require('./server2')
 
 const app = express()
 const compiler = webpack(WebpackConfig)
@@ -195,10 +198,36 @@ router.get('/extend/get', function(req, res) {
   // withCredentials  跨域携带 cookie
 
   router.get('/more/get', function(req, res) {
-    // res.json(req.body+'hello---cookies----Ele---')
+    res.json(req.body+'hello---cookies----Ele---')
     res.json(req.cookies)
   })
   
+ // XSRF    实现 XSRF 的自动防御的能力
+
+ app.use(express.static(__dirname, {
+  setHeaders (res) {
+    res.cookie('XSRF-TOKEN-Ele', 'abc111111111111')
+  }
+}))
+
+
+
+//  实现上传 和 下载的  进度条 
+
+const multipart = require('connect-multiparty')
+app.use(multipart({
+  uploadDir: path.resolve(__dirname, 'upload-file')
+}))
+
+router.post('/more/upload', function(req, res) {
+  console.log(req.body, req.files)
+  res.end('upload success!')
+})
+
+
+
+
+
 
 app.use(router)
 
@@ -208,6 +237,10 @@ const port = process.env.PORT || 8080
 module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop-11`)
 })
+
+
+
+
 
 
 

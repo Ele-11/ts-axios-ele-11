@@ -57,3 +57,10 @@ export function deepMerge(...objs: any[]): any {
 
   return result
 }
+
+//如果请求的数据是 FormData 类型，我们应该主动删除请求 headers 中的 Content-Type 字段，
+// 让浏览器自动根据请求数据设置 Content-Type。
+//比如当我们通过 FormData 上传文件的时候，浏览器会把请求 headers 中的 Content-Type 设置为 multipart/form-data。
+export function isFormData(val: any): boolean {
+  return typeof val !== 'undefined' && val instanceof FormData
+}
