@@ -33,44 +33,44 @@ test()
 
 
 
-// //作为 axios函数 调用  一个对象参数
-// axios({ 
-//   url: '/extend/post',
-//   method: 'post',
-//   data: {
-//     msg: 'hi -11'
-//   }
-// })
+//作为 axios函数 调用  一个对象参数
+axios({ 
+  url: '/extend/post',
+  method: 'post',
+  data: {
+    msg: 'hi -11'
+  }
+})
 
 
-// axios('/extend/post', {  // 一个url字符串参数   一个对象参数
-//   method: 'post',
-//   data: {
-//     msg: 'hello  --11'
-//   }
-// })
+axios('/extend/post', {  // 一个url字符串参数   一个对象参数
+  method: 'post',
+  data: {
+    msg: 'hello  --11'
+  }
+})
 
 
-//作为 axios对象属性 里面的 方法调用
+// 作为 axios对象属性 里面的 方法调用
 
-// axios.request({ 
-//   url: '/extend/post',
-//   method: 'post',
-//   data: {
-//     msg: 'hello'
-//   }
-// })
+axios.request({ 
+  url: '/extend/post',
+  method: 'post',
+  data: {
+    msg: 'hello'
+  }
+})
 
-// axios.get('/extend/get')
+axios.get('/extend/get')
 
-// axios.options('/extend/options')
+axios.options('/extend/options')
 
-// axios.delete('/extend/delete')
+axios.delete('/extend/delete')
 
-// axios.head('/extend/head')
+axios.head('/extend/head')
 
-// axios.post('/extend/post', { msg: 'post' })
+axios.post('/extend/post', { msg: 'post' })
 
-// axios.put('/extend/put', { msg: 'put' })
+axios.put('/extend/put', { msg: 'put' })
 
-// axios.patch('/extend/patch', { msg: 'patch' })
+axios.patch('/extend/patch', { msg: 'patch' })

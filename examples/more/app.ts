@@ -2,6 +2,8 @@ import axios from '../../src/index'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { AxiosError } from '../../src/types'
+import qs from 'qs'
+
 
 // document.cookie = 'a=b'
 
@@ -133,7 +135,7 @@ import { AxiosError } from '../../src/types'
 
 
 
-// HTTP 授权    这个 功能实现了
+//  HTTP 授权  这个 功能实现了
 
 
 
@@ -162,13 +164,118 @@ import { AxiosError } from '../../src/types'
 //   console.log(e.message)
 // })
 
-axios.get('/more/304', {
-  validateStatus(status) {
-    return status >= 200 && status < 400    //   这里 因为你是  允许 200 到400 的  所以 304也有 返回 
+// axios.get('/more/304', {
+//   name:"11",
+//   validateStatus(status) {
+//     return status >= 200 && status < 400    //   这里 因为你是  允许 200 到400 的  所以 304也有 返回 
+//   }
+// }).then(res => {
+//   console.log(res)
+// }).catch((e: AxiosError) => {
+//   console.log(e.message)
+// })
+
+
+
+
+
+//自定义参数序列化
+
+//我们编写了 3 种情况的请求，第一种满足请求的 params 参数是 URLSearchParams 对象类型的。
+
+// axios.get('/more/get', {
+//   params: new URLSearchParams('a=b&name=ShiYi乙乙')
+// }).then(res => {
+//   console.log(res)
+// })
+
+
+// // 后两种请求的结果主要区别在于前者并没有对 [] 转义，而后者会转义。
+// axios.get('/more/get', {
+//   params: {
+//     a: 1,
+//     b: 2,
+//     c: ['a', 'b', 'c']
+//   }
+// }).then(res => {
+//   console.log(res)
+// })
+
+// const instance = axios.create({
+//   paramsSerializer(params) {
+//     return qs.stringify(params, { arrayFormat: 'brackets' })   //返回的 /%5B/gi 对应 '[' . /%5D/gi 对应 ']' 
+//     // return qs.stringify(params, { arrayFormat: 'indices' })
+//   }
+// })
+
+// instance.get('/more/get', {
+//   params: {
+//     a: 11,
+//     b: 222,
+//     c: ['aa', 'bb', 'cc']
+//   }
+// }).then(res => {
+//   console.log(res)
+// })
+
+
+
+
+
+
+// baseURL  实现了 baseURL 的配置功能   请求了某个公开网站的 一张 随机的图片
+ 
+// const instance = axios.create({
+//   baseURL: 'https://picsum.photos/800/600?random='
+// })
+
+// instance.get('11')
+
+// instance.get('https://picsum.photos/800/600?random=11')
+
+
+
+
+
+//  静态方法拓展
+
+
+//这里我们通过 axios.all 同时发出了 2 个请求，返回了 Promise 数组，
+// 我们可以在 axios.spread 的参数函数中拿到结果，也可以直接在 then 函数的参数函数中拿到结果。
+// 另外，我们可以根据 axios.getUri 方法在不发送请求的情况下根据配置得到最终请求的 url 结果。
+
+function getA() {
+  return axios.get('/more/A')
+}
+
+function getB() {
+  return axios.get('/more/B')
+}
+
+// axios.all([getA(), getB()])
+//   .then(axios.spread(function(resA, resB) {  //  这个和下面这个是一样的效果  axios还是实现了我们这里实现 也是为了和官方统一一下
+//     console.log(resA.data)
+//     console.log(resB.data)
+//   }))
+
+
+// axios.all([getA(), getB()])   //  这个和上面这个是一样的效果  其实axios没必要实现的  用 本来的promise就可以解决的
+//   .then(([resA, resB]) => {
+//     console.log(resA.data)
+//     console.log(resB.data)
+//   })
+
+const fakeConfig = {
+  baseURL: 'https://www.baidu.com/',
+  url: '/user/12345',
+  params: {
+    idClient: 1,
+    idTest: 2,
+    testString: 'thisIsATest'
   }
-}).then(res => {
-  console.log(res)
-}).catch((e: AxiosError) => {
-  console.log(e.message)
-})
+}
+console.log(axios.getUri(fakeConfig))
+
+
+
 

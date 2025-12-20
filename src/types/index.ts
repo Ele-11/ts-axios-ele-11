@@ -18,6 +18,16 @@
 
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance
+
+  all<T>(promises: Array<T | Promise<T>>): Promise<T[]> // axios.all 就是 Promise.all 的封装，它返回的是一个 Promise 数组
+
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R // axios.spread 方法是接收一个函数，返回一个新的函数
+
+  Axios: AxiosClassStatic
+}
+
+export interface AxiosClassStatic {
+  new (config: AxiosRequestConfig): Axios
 }
 
 export interface AxiosInterceptorManager<T> {
@@ -61,6 +71,8 @@ export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
 
 export interface Axios {
   defaults: AxiosRequestConfig
+
+  getUri(config?: AxiosRequestConfig): string
 
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>
@@ -129,7 +141,10 @@ export interface AxiosRequestConfig {
 
   auth?: AxiosBasicCredentials
 
+  baseURL?: string
+
   validateStatus?: (status: number) => boolean
+  paramsSerializer?: (params: any) => string
 
   onDownloadProgress?: (e: ProgressEvent) => void
   onUploadProgress?: (e: ProgressEvent) => void

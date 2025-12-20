@@ -198,7 +198,8 @@ router.get('/extend/get', function(req, res) {
   // withCredentials  跨域携带 cookie
 
   router.get('/more/get', function(req, res) {
-    res.json(req.body+'hello---cookies----Ele---')
+    // res.json(req.body+'hello---cookies----Ele---')
+    res.json(req.body)
     res.json(req.cookies)
   })
   
@@ -241,13 +242,19 @@ router.post('/more/post', function(req, res) {
 
 router.get('/more/304', function(req, res) {
   res.status(304)
-  res.json(req.body+" 304-Ele-1111111111111111")
+  res.json(req.body)
   res.end()
 })
 
 
 
+ router.get('/more/A', function(req, res) {
+    res.end('A-Ele')
+  })
 
+  router.get('/more/B', function(req, res) {
+    res.end('B-11')
+  })
 
 
 

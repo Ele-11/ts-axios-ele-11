@@ -5,10 +5,11 @@ import {
   AxiosResponse,
   Method
 } from '../types'
-import dispatchRequest from './dispatchRequest'
+import dispatchRequest, { transformURL } from './dispatchRequest'
 import InterceptorManager from './interceptorManager'
 import { ResolvedFn, RejectedFn } from '../types'
 import mergeConfig from './mergeConfig'
+// import {transformURL} from './dispatchRequest'
 
 interface PromiseChain {
   resolved: ResolvedFn | ((config: AxiosRequestConfig) => AxiosPromise)
@@ -53,6 +54,11 @@ export default class Axios {
   //   }
   //   return dispatchRequest(config)
   // }
+
+  getUri(config?: AxiosRequestConfig): string {
+    config = mergeConfig(this.defaults, config)
+    return transformURL(config)
+  }
 
   request(url: any, config?: any): AxiosPromise {
     if (typeof url === 'string') {
