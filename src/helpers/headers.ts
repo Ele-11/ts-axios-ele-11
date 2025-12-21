@@ -28,6 +28,30 @@ export function processHeaders(headers: any, data: any): any {
 }
 
 // 这个函数的主要作用  就是  把  字符串类型的 headers  解析成  对象类型
+
+// 这个 单元测试没通过  因为只考虑了  只有一个 引号的情况
+// export function parseHeaders(headers: string): any {
+//   let parsed = Object.create(null)
+//   if (!headers) {
+//     return parsed
+//   }
+
+//   headers.split('\r\n').forEach(line => {
+//     let [key, val] = line.split(':')
+//     key = key.trim().toLowerCase()
+//     if (!key) {
+//       return
+//     }
+//     if (val) {
+//       val = val.trim()
+//     }
+//     parsed[key] = val
+//   })
+
+//   return parsed
+// }
+
+// 这个 单元测试 就能通过   考虑了  有多个 引号的情况
 export function parseHeaders(headers: string): any {
   let parsed = Object.create(null)
   if (!headers) {
@@ -35,14 +59,12 @@ export function parseHeaders(headers: string): any {
   }
 
   headers.split('\r\n').forEach(line => {
-    let [key, val] = line.split(':')
+    let [key, ...vals] = line.split(':')
     key = key.trim().toLowerCase()
     if (!key) {
       return
     }
-    if (val) {
-      val = val.trim()
-    }
+    let val = vals.join(':').trim()
     parsed[key] = val
   })
 

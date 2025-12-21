@@ -71,6 +71,7 @@ export default class Axios {
     }
 
     config = mergeConfig(this.defaults, config)
+    config.method = config.method.toLowerCase() // 为了通过单测加的
 
     const chain: PromiseChain[] = [
       {

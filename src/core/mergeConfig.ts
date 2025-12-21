@@ -28,7 +28,20 @@ function fromVal2Strat(val1: any, val2: any): any {
  * @param val1
  * @param val2
  */
+// function deepMergeStrat(val1: any, val2: any): any {
+//   if (isPlainObject(val2)) {
+//     return deepMerge(val1, val2)
+//   } else if (typeof val2 !== 'undefined') {
+//     return val2
+//   } else if (isPlainObject(val1)) {
+//     return deepMerge(val1)
+//   } else {
+//     return val1
+//   }
+// }
+
 function deepMergeStrat(val1: any, val2: any): any {
+  // 需要通过 单元测试 而新增加的
   if (isPlainObject(val2)) {
     return deepMerge(val1, val2)
   } else if (typeof val2 !== 'undefined') {

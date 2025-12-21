@@ -14,9 +14,22 @@ export default function dispatchRequest(
   throwIfCancellationRequested(config)
 
   processConfig(config)
-  return xhr(config).then(res => {
-    return transformResponseData(res)
-  })
+  // return xhr(config).then(res => {
+  //   return transformResponseData(res)
+  // })
+
+  return xhr(config).then(
+    // 为了通过单测 写的
+    res => {
+      return transformResponseData(res)
+    },
+    e => {
+      if (e && e.response) {
+        e.response = transformResponseData(e.response)
+      }
+      return Promise.reject(e)
+    }
+  )
 }
 
 function throwIfCancellationRequested(config: AxiosRequestConfig): void {

@@ -25,7 +25,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       data = null,
       url = '',
       method = 'get',
-      headers,
+      // headers,  为了通过单元测试写的  加一个默认空值
+      headers = {},
       responseType,
       timeout,
       withCredentials,
