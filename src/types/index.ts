@@ -16,6 +16,25 @@
 //   patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise
 // }
 
+export interface CancelTokenSource {
+  token: CancelToken
+  cancel: Canceler
+}
+
+export interface CancelTokenStatic {
+  new (executor: CancelExecutor): CancelToken
+
+  source(): CancelTokenSource
+}
+
+export interface Cancel {
+  message?: string
+}
+
+export interface CancelStatic {
+  new (message?: string): Cancel
+}
+
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance
 
@@ -24,6 +43,13 @@ export interface AxiosStatic extends AxiosInstance {
   spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R // axios.spread 方法是接收一个函数，返回一个新的函数
 
   Axios: AxiosClassStatic
+
+  // 其中 Cancel 是实例类型的接口定义，
+  // CancelStatic 是类类型的接口定义，
+  // 并且我们给 axios 扩展了多个静态方法。
+  CancelToken: CancelTokenStatic
+  Cancel: CancelStatic
+  isCancel: (value: any) => boolean
 }
 
 export interface AxiosClassStatic {
@@ -143,6 +169,8 @@ export interface AxiosRequestConfig {
 
   baseURL?: string
 
+  cancelToken?: CancelToken
+
   validateStatus?: (status: number) => boolean
   paramsSerializer?: (params: any) => string
 
@@ -151,6 +179,29 @@ export interface AxiosRequestConfig {
 
   [propName: string]: any //我们会通过 config2[key] 这种索引的方式访问，
   //所以需要给 AxiosRequestConfig 的接口定义添加一个字符串索引签名。
+}
+
+// export interface CancelToken {
+//   promise: Promise<string>
+//   reason?: string
+// }
+
+export interface CancelToken {
+  promise: Promise<Cancel>
+  reason?: Cancel
+
+  //除此之外，我们还需要实现一些额外逻辑，比如当一个请求携带的 cancelToken 已经被使用过，
+  // 那么我们甚至都可以不发送这个请求，只需要抛一个异常即可，
+  // 并且抛异常的信息就是我们取消的原因，所以我们需要给 CancelToken 扩展一个方法。
+  throwIfRequested(): void
+}
+
+export interface Canceler {
+  (message?: string): void
+}
+
+export interface CancelExecutor {
+  (cancel: Canceler): void
 }
 
 export interface AxiosBasicCredentials {

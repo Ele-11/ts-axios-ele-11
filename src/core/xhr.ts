@@ -37,7 +37,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       onUploadProgress,
 
       auth,
-      validateStatus
+      validateStatus,
+      cancelToken
     } = config
 
     const request = new XMLHttpRequest()
@@ -54,16 +55,16 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     processHeaders()
 
-    // processCancel()
+    processCancel()
 
-    // function processCancel(): void {
-    //   if (cancelToken) {
-    //     cancelToken.promise.then(reason => {
-    //       request.abort()
-    //       reject(reason)
-    //     })
-    //   }
-    // }
+    function processCancel(): void {
+      if (cancelToken) {
+        cancelToken.promise.then(reason => {
+          request.abort()
+          reject(reason)
+        })
+      }
+    }
 
     request.send(data)
 

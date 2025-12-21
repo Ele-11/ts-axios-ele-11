@@ -3,6 +3,8 @@ import Axios from './core/Axios'
 import mergeConfig from './core/mergeConfig'
 import { extend } from './helpers/util'
 import defaults from './defaults'
+import CancelToken from './cancel/CancelToken'
+import Cancel, { isCancel } from './cancel/Cancel'
 
 //   用工厂模式去创建一个 axios 混合对象
 
@@ -53,6 +55,10 @@ axios.spread = function spread(callback) {
 }
 
 axios.Axios = Axios
+
+axios.CancelToken = CancelToken
+axios.Cancel = Cancel
+axios.isCancel = isCancel
 
 export default axios
 
